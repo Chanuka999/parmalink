@@ -32,8 +32,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/", async (req, res) => {
-  console.log("post request");
+app.post("/", (req, res) => {
   const user = new User({
     name: req.body.name,
     email: req.body.email,
@@ -43,7 +42,7 @@ app.post("/", async (req, res) => {
     address: req.body.address,
   });
 
-  await user
+  user
     .save()
     .then(() => {
       res.json({
