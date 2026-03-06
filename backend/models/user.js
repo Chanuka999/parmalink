@@ -27,6 +27,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    isBlock: {
+      type: Boolean,
+      default: false,
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    image: {
+      type: String,
+      default: "https://www.gravatar.com/avatar",
+    },
   },
   {
     timestamps: true,
