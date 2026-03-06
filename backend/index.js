@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 
-import StudentRouter from "./routes/studentRoute.js";
+import UserRouter from "./routes/userRoute.js";
 
 const app = express();
 
@@ -20,7 +20,7 @@ mongoose
     console.log("database connection failed");
   });
 
-app.use(StudentRouter);
+app.use(UserRouter);
 
 app.listen(5000, (req, res) => {
   console.log("server started on 5000");
