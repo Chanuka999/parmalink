@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
 import UserRouter from "./routes/userRoute.js";
+import MedicineRouter from "./routes/medicineRoute.js";
 
 const app = express();
 
@@ -39,7 +40,8 @@ mongoose
     console.log("database connection failed");
   });
 
-app.use(UserRouter);
+app.use("/users", UserRouter);
+app.use("/medicine", MedicineRouter);
 
 app.listen(5000, (req, res) => {
   console.log("server started on 5000");
