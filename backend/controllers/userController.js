@@ -1,7 +1,22 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export function createUser(req, res) {
+  if (req.user == null) {
+    res.status(404).json({
+      message: "please login and try again",
+    });
+    return;
+  }
+
+  if (req.user.role != "admin") {
+    res.status(401).json({
+      message: "you must be an admin to create a student",
+    });
+    return;
+  }
+
   const hashpassword = bcrypt.hashSync(req.body.password, 10);
 
   const user = new User({
@@ -15,12 +30,12 @@ export function createUser(req, res) {
   user
     .save()
     .then(() => {
-      res.json({
+      res.status(200).json({
         message: "user added successfully",
       });
     })
     .catch(() => {
-      res.json({
+      res.status(400).json({
         message: "user added failed",
       });
     });
@@ -45,7 +60,7 @@ export function loginUser(req, res) {
   })
     .then((user) => {
       if (user == null) {
-        res.json({
+        res.status(404).json({
           message: "user not found",
         });
       } else {
@@ -54,18 +69,30 @@ export function loginUser(req, res) {
           user.password,
         );
         if (ispasswordMatching) {
-          res.json({
+          const token = jwt.sign(
+            {
+              name: user.name,
+              email: user.email,
+              role: user.role,
+              phone: user.phone,
+              address: user.address,
+              isEmailVerified: user.isEmailVerified,
+            },
+            "jwt-secret",
+          );
+          res.status(200).json({
             message: "login successful",
+            token: token,
           });
         } else {
-          res.json({
+          res.status(400).json({
             message: "login failed",
           });
         }
       }
     })
     .catch((error) => {
-      res.json({
+      res.status(404).json({
         message: error,
       });
     });
