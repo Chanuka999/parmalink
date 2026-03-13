@@ -83,6 +83,13 @@ export function loginUser(req, res) {
           res.status(200).json({
             message: "login successful",
             token: token,
+            user: {
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              role: user.role,
+              isEmailVerified: user.isEmailVerified,
+            },
           });
         } else {
           res.status(400).json({
