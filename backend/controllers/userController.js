@@ -78,7 +78,7 @@ export function loginUser(req, res) {
               address: user.address,
               isEmailVerified: user.isEmailVerified,
             },
-            "jwt-secret",
+            process.env.JWT_SECRET,
           );
           res.status(200).json({
             message: "login successful",
