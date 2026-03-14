@@ -5,6 +5,7 @@ import { BsFillCartPlusFill } from "react-icons/bs";
 import { HiUsers } from "react-icons/hi2";
 import { Link, Route, Routes } from "react-router-dom";
 import AdminProductPage from "./admin/AdminProductPage";
+import AdminAddNewProduct from "./admin/AdminAddNewProduct";
 
 const AdminPage = () => {
   return (
@@ -49,6 +50,7 @@ const AdminPage = () => {
             <Route path="/" element={<h1>dashboard</h1>} />
             <Route path="/orders" element={<h1>orders</h1>} />
             <Route path="/products" element={<AdminProductPage />} />
+            <Route path="/add-product" element={<AdminAddNewProduct />} />
           </Routes>
         </div>
       </div>
