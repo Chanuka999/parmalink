@@ -27,7 +27,9 @@ const LoginPage = () => {
         navigate("/");
       }
     } catch (error) {
-      console.log("error", error);
+      console.error(error);
+
+      toast.error("login failed,please check your chedintials");
     }
   };
 
