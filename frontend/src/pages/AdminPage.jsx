@@ -30,7 +30,7 @@ const AdminPage = () => {
           orders
         </Link>
         <Link
-          to="/admin/products"
+          to="/admin/medicine"
           className="w-[290px] flex items-center gap-3 rounded-lg px-2 text-white"
         >
           <AiOutlineStock />
@@ -49,7 +49,7 @@ const AdminPage = () => {
           <Routes path="/">
             <Route path="/" element={<h1>dashboard</h1>} />
             <Route path="/orders" element={<h1>orders</h1>} />
-            <Route path="/products" element={<AdminProductPage />} />
+            <Route path="/medicine" element={<AdminProductPage />} />
             <Route path="/add-product" element={<AdminAddNewProduct />} />
           </Routes>
         </div>
