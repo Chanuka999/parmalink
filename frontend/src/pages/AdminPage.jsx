@@ -6,6 +6,7 @@ import { HiUsers } from "react-icons/hi2";
 import { Link, Route, Routes } from "react-router-dom";
 import AdminProductPage from "./admin/AdminProductPage";
 import AdminAddNewProduct from "./admin/AdminAddNewProduct";
+import AdminUpdateProduct from "./admin/AdminUpdateProduct";
 
 const AdminPage = () => {
   return (
@@ -51,6 +52,7 @@ const AdminPage = () => {
             <Route path="/orders" element={<h1>orders</h1>} />
             <Route path="/medicine" element={<AdminProductPage />} />
             <Route path="/add-product" element={<AdminAddNewProduct />} />
+            <Route path="/updateProduct" element={<AdminUpdateProduct />} />
           </Routes>
         </div>
       </div>
