@@ -5,9 +5,67 @@ import { MdDelete } from "react-icons/md";
 import { FaPlusCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
+function ProductDeleteConfirm({ open, onClose, onConfirm, product }) {
+  if (!open || !product) return null;
+  return (
+    <div className="fixed left-0 top-0 w-full h-screen bg-black/60 z-[100] flex items-center justify-center">
+      <div className="w-[350px] bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
+        <h2 className="text-lg font-bold mb-4 text-center">Delete Product</h2>
+        <p className="mb-6 text-center">
+          Are you sure you want to delete{" "}
+          <span className="font-semibold">{product.name}</span>?
+        </p>
+        <div className="flex gap-4">
+          <button
+            className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
+            onClick={() => onConfirm(product._id)}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const AdminProductPage = () => {
   const [medicine, setMedicine] = useState([]);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [deleting, setDeleting] = useState(false);
   const navigate = useNavigate();
+  // Delete product handler
+  const handleDeleteClick = (product) => {
+    setSelectedProduct(product);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async (productId) => {
+    setDeleting(true);
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/medicine/${productId}`,
+      );
+      setDeleteDialogOpen(false);
+      setSelectedProduct(null);
+      fetchMedicines();
+    } catch (err) {
+      alert("Failed to delete product.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+    setSelectedProduct(null);
+  };
 
   const formatDate = (dateString) => {
     if (!dateString) return "-";
@@ -70,6 +128,12 @@ const AdminProductPage = () => {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-secondary/85 to-secondary p-4 md:p-8">
+      <ProductDeleteConfirm
+        open={deleteDialogOpen}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        product={selectedProduct}
+      />
       <Link
         to="/admin/add-product"
         className="fixed right-[55px] bottom-[70px] text-3xl"
@@ -182,8 +246,10 @@ const AdminProductPage = () => {
                         <div className="flex items-center justify-center gap-2">
                           <button
                             type="button"
-                            className="rounded-lg bg-red-50 p-2 text-red-600 transition hover:bg-red-100"
+                            className="rounded-lg bg-red-50 p-2 text-red-600 transition hover:bg-red-100 disabled:opacity-50"
                             aria-label="Delete item"
+                            onClick={() => handleDeleteClick(item)}
+                            disabled={deleting}
                           >
                             <MdDelete className="text-lg" />
                           </button>
