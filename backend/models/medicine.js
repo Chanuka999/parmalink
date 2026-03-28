@@ -26,11 +26,6 @@ const medicineSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    supplierId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Supplier",
-      required: true,
-    },
     prescriptionRequired: {
       type: Boolean,
       default: false,

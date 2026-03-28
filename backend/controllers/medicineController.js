@@ -9,7 +9,7 @@ export async function createMedicine(req, res) {
     return;
   }
   try {
-    const medicinedata = req.body;
+    const { supplierId, ...medicinedata } = req.body;
     const medicine = new Medicine(medicinedata);
     await medicine.save();
 
