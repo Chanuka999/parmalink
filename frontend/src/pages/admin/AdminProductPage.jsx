@@ -3,10 +3,11 @@ import { MdSecurityUpdateGood } from "react-icons/md";
 import React, { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { FaPlusCircle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminProductPage = () => {
   const [medicine, setMedicine] = useState([]);
+  const navigate = useNavigate();
 
   const formatDate = (dateString) => {
     if (!dateString) return "-";
@@ -30,14 +31,42 @@ const AdminProductPage = () => {
     }).format(amount);
   };
 
-  useEffect(() => {
+  // Fetch medicine list
+  const fetchMedicines = () => {
     axios
       .get(import.meta.env.VITE_API_URL + "/api/medicine")
       .then((responce) => {
-        console.log(responce.data);
         setMedicine(responce.data);
       });
+  };
+
+  // Re-fetch on mount and after update
+  useEffect(() => {
+    fetchMedicines();
   }, []);
+
+  // Listen for navigation state to trigger refresh after update
+  useEffect(() => {
+    if (
+      window.history.state &&
+      window.history.state.usr &&
+      window.history.state.usr.updated
+    ) {
+      fetchMedicines();
+      // Optionally clear the update flag
+      window.history.replaceState(
+        {
+          ...window.history.state,
+          usr: { ...window.history.state.usr, updated: false },
+        },
+        "",
+      );
+    }
+  }, [
+    window.history.state &&
+      window.history.state.usr &&
+      window.history.state.usr.updated,
+  ]);
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-secondary/85 to-secondary p-4 md:p-8">
@@ -162,6 +191,11 @@ const AdminProductPage = () => {
                             type="button"
                             className="rounded-lg bg-amber-50 p-2 text-amber-600 transition hover:bg-amber-100"
                             aria-label="Update item"
+                            onClick={() =>
+                              navigate("/admin/updateProduct", {
+                                state: item,
+                              })
+                            }
                           >
                             <MdSecurityUpdateGood className="text-lg" />
                           </button>
