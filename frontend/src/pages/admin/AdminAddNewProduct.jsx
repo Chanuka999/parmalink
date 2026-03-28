@@ -179,7 +179,7 @@ const AdminAddNewProduct = () => {
             Add Product
           </button>
           <button
-            onClick={() => navigate("admin/medicine")}
+            onClick={() => navigate("/admin/medicine")}
             className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-2 rounded-xl shadow-md hover:scale-105 transition-transform duration-200"
           >
             cancel
