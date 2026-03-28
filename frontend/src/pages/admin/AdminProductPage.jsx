@@ -90,7 +90,7 @@ const AdminProductPage = () => {
                   <th className="px-4 py-3 font-semibold">Price</th>
                   <th className="px-4 py-3 font-semibold">Stock</th>
                   <th className="px-4 py-3 font-semibold">Expiry Date</th>
-                  <th className="px-4 py-3 font-semibold">Supplier ID</th>
+                  {/* <th className="px-4 py-3 font-semibold">Supplier ID</th> */}
                   <th className="px-4 py-3 text-center font-semibold">
                     Actions
                   </th>
@@ -108,9 +108,17 @@ const AdminProductPage = () => {
                     >
                       <td className="px-4 py-3">
                         <img
-                          src={item.image}
+                          src={
+                            Array.isArray(item.image)
+                              ? item.image[0]
+                              : item.image
+                          }
                           alt={item.name}
                           className="h-12 w-12 rounded-lg border border-slate-200 object-cover"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "/logoo.png";
+                          }}
                         />
                       </td>
 
@@ -138,9 +146,9 @@ const AdminProductPage = () => {
                       <td className="px-4 py-3">
                         {formatDate(item.expiryDate)}
                       </td>
-                      <td className="px-4 py-3 text-slate-600">
+                      {/* <td className="px-4 py-3 text-slate-600">
                         {item.supplierId}
-                      </td>
+                      </td> */}
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-center gap-2">
                           <button
